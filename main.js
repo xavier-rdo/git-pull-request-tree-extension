@@ -146,8 +146,8 @@
      */
     TreeBuilder = function (root, gitFiles) {
         for (key in gitFiles) {
-            var gitFile = gitFiles[key];
-            var nodes = gitFile.fullPath.split('/');
+            var gitFile  = gitFiles[key];
+            var nodes    = gitFile.fullPath.split('/');
             var filename = nodes.pop();
             var fileNode = new FileNode(filename, gitFile.created, gitFile.updated, gitFile.removed);
             var currentParent = root;
@@ -179,37 +179,3 @@
     }
 
 }(this));
-
-
-/* *************************** */
-/* ********** TEST *********** */
-/* *************************** */
-
-var gitFiles = [
-     new GitFile('app/Resources/cron/cron', 5, 0, 5),
-     new GitFile('src/MyApp/Bundle/Core/CoreBundle/Resources/config/email_mappers.xml', 15, 0, 0),
-     new GitFile('src/MyApp/Bundle/Front/CoreBundle/Resources/views/Account/account.html.twig', 5, 0, 0),
-     new GitFile('src/MyApp/Mail/Mapper/Custom/ReviewRecord.php', 5, 0, 5),
-     new GitFile('src/MyApp/Mail/Mapper/Custom/ReviewRecordMapper.php', 5, 0, 5),
-     new GitFile('src/MyApp/Migrations/Version20150922174714.php', 5, 0, 5),
-     new GitFile('src/MyApp/Model/Enums/EmailType.php', 5, 0, 5),
-     new GitFile('src/MyApp/Model/RecordRepository.php', 5, 0, 5),
-     new GitFile('src/MyApp/Api/Application/Command/SubmitReviewCommand.php', 5, 0, 5),
-     new GitFile('src/MyApp/Api/Application/Command/SubmitReviewCommandHandler.php', 5, 0, 5),
-     new GitFile('src/MyApp/Api/Domain/Model/Review.php', 5, 0, 5),
-     new GitFile('src/MyApp/Api/Domain/Repository/ReviewRepositoryInterface.php', 5, 0, 5),
-     new GitFile('src/MyApp/Api/Infrastructure/Bundle/Command/NotifyReviewableRecordsCommand.php', 5, 0, 5),
-     new GitFile('src/MyApp/Api/Infrastructure/Bundle/Controller/ReviewController.php', 5, 0, 5),
-     new GitFile('src/MyApp/Api/Infrastructure/Bundle/Resources/config/doctrine/Review.orm.yml', 5, 0, 5),
-     new GitFile('src/MyApp/Api/Infrastructure/Bundle/Resources/config/routing.yml', 5, 0, 5),
-     new GitFile('src/MyApp/Api/Infrastructure/Bundle/Resources/config/services.yml', 5, 0, 5),
-     new GitFile('src/MyApp/Api/Infrastructure/Bundle/Resources/translations/messages.fr.yml', 5, 0, 5),
-     new GitFile('src/MyApp/Api/Infrastructure/Repository/Doctrine/ReviewRepository.php', 5, 0, 5),
-     new GitFile('composer.json', 10, 0, 8),
-     new GitFile('composer.lock', 10, 0, 2)
-];
-
-var root = new Root();
-new TreeBuilder(root, gitFiles);
-
-console.log("Root has " + root.created + " new lines and " + root.removed + " removed lines");
