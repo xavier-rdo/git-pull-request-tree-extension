@@ -5,36 +5,15 @@
 (function(global) {
 
     /**
-     * Model for a git file that is part of a Pull/Merge Request. Wraps data extracted
-     * from "Files changed" list in a Github pull request page : file path, count of new lines
-     * and deleted lines.
-     *
-     * To be Gitlab-compliant, it also exposes the updated parts (Gitlab distinguishes
-     * between created files, updated files and deleted files).
-     *
-     * @param fullPath String  Full path of the file relative to the git project root
-     * @param created  Integer Count of new lines (Github) or 1 if new file (Gitlab)
-     * @param updated  Integer Count of updated lines (Github) or 1 if updated file (Gitlab)
-     * @param removed  Integer Count of removed lines (Github) or 1 removed file (Gitlab)
-     *
-     * @constructor
-     */
-    GitFile = function (fullPath, created, updated, removed) {
-        this.fullPath = fullPath;
-        this.created = created || 0;
-        this.updated = updated || 0;
-        this.removed = removed || 0;
-    };
-
-    /**
      * Base model for an atomic file path node (either a file, or a folder)
+     * It exposes common fields : name, created (int), updated (int), etc.
      *
      * @param name String Name of the node
      *
      * @constructor
      */
-    Node = function (name) {
-        this.name = name;
+    var Node = function (name) {
+        this.name    = name;
         this.created = 0;
         this.updated = 0;
         this.removed = 0;
@@ -65,11 +44,39 @@
     };
 
     /**
+     * Model for a git file that is part of a Pull/Merge Request. Wraps data extracted
+     * from "Files changed" list in a Github pull request page : file path, count of new lines
+     * and deleted lines.
+     *
+     * To be Gitlab-compliant, it also exposes the updated parts (Gitlab distinguishes
+     * between created files, updated files and deleted files).
+     *
+     * @param fullPath String  Full path of the file relative to the git project root
+     * @param created  Integer Count of new lines (Github) or 1 if new file (Gitlab)
+     * @param updated  Integer Count of updated lines (Github) or 1 if updated file (Gitlab)
+     * @param removed  Integer Count of removed lines (Github) or 1 removed file (Gitlab)
+     *
+     * @constructor
+     */
+    var GitFile = function (fullPath, created, updated, removed) {
+        this.fullPath = fullPath;
+        var parts     = fullPath.split('/');
+        var filename  = parts.pop();
+        this.path     = parts.join('/');
+        Node.call(this, filename);
+        this.created = created;
+        this.updated = updated;
+        this.removed = removed;
+    };
+
+    GitFile.prototype = Object.create(Node.prototype);
+
+    /**
      * Model for folder nodes (root or sub-folder)
      *
      * {@inheritdoc}
      */
-    FolderNode = function (name) {
+    var FolderNode = function (name) {
         Node.call(this, name);
         this.files = [];
         this.folders = [];
@@ -98,7 +105,7 @@
     /**
      * Add a file to the current folder
      *
-     * @param file FileNode
+     * @param file GitFile
      */
     FolderNode.prototype.addFile = function (file) {
         file.setParent(this);
@@ -128,29 +135,12 @@
      *
      * @constructor
      */
-    Root = function () {
-        FolderNode.call(this, '.');
+    var Root = function () {
+        FolderNode.call(this, '/');
         this.parent = null;
     };
 
     Root.prototype = Object.create(FolderNode.prototype);
-
-    /**
-     * Model for file nodes
-     *
-     * @param name    String     Name of the node
-     * @param created Integer    Count of new lines     (or 1 if added Gitlab file)
-     * @param updated Integer    Count of updated lines (or 1 if updated Gitlab file)
-     * @param removed Integer    Count of removed lines (or 1 if removed Gitlab file)
-     */
-    FileNode = function (name, created, updated, removed) {
-        Node.call(this, name);
-        this.created = created || 0;
-        this.updated = updated || 0;
-        this.removed = removed || 0;
-    };
-
-    FileNode.prototype = Object.create(Node.prototype);
 
     /* *************************** */
     /* ****** TREE BUILDER ******* */
@@ -165,18 +155,16 @@
      *
      * @constructor
      */
-    TreeBuilder = function (root, gitFiles) {
+    var TreeBuilder = function (root, gitFiles) {
         for (key in gitFiles) {
-            var gitFile  = gitFiles[key];
-            var nodes    = gitFile.fullPath.split('/');
-            var filename = nodes.pop();
-            var fileNode = new FileNode(filename, gitFile.created, gitFile.updated, gitFile.removed);
+            var gitFile       = gitFiles[key];
+            var parts         = gitFile.path !== '' ? gitFile.path.split('/') : [];
             var currentParent = root;
-            for (var i = 0; i < nodes.length; i++) {
-                var nodeName = nodes[i];
-                currentParent = currentParent.addFolder(nodeName);
+            for (var i = 0; i < parts.length; i++) {
+                var part = parts[i];
+                currentParent = currentParent.addFolder(part);
             }
-            currentParent.addFile(fileNode);
+            currentParent.addFile(gitFile);
         }
     };
 
@@ -189,13 +177,11 @@
         global.GitFile     = GitFile;
         global.Root        = Root;
         global.FolderNode  = FolderNode;
-        global.FileNode    = FileNode;
         global.TreeBuilder = TreeBuilder;
     } else {
         exports.GitFile     = GitFile;
         exports.Root        = Root;
         exports.FolderNode  = FolderNode;
-        exports.FileNode    = FileNode;
         exports.TreeBuilder = TreeBuilder;
     }
 

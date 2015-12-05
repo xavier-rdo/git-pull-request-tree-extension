@@ -37,7 +37,7 @@ describe('Github pull request File TreeBuilder\n', function() {
     describe('Tree Model (Git Files, Tree Root, Folders and Files)', function() {
 
         it("Should create a root folder with name '.'", function() {
-            root.name.should.equal('.');
+            root.name.should.equal('/');
         });
 
         it("Should instantiate 21 Git Files", function()  {
@@ -46,7 +46,7 @@ describe('Github pull request File TreeBuilder\n', function() {
     });
 
     describe('Tree Builder', function() {
-        new TreeBuilder(root, gitFiles);
+        new model.TreeBuilder(root, gitFiles);
 
         it("Should add two files in root folder", function() {
             Object.keys(root.files).length.should.equal(2);
