@@ -1,0 +1,32 @@
+{
+  "name": "git-pull-request-tree",
+  "version": "0.0.0",
+  "description": "Chrome extension to display modified files in a Github (Gitlab) pull request in a tree view",
+  "main": "main.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha ./test/treeBuilderTest.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/xavier-rdo/git-pull-request-tree-extension.git"
+  },
+  "keywords": [
+    "Git",
+    "Github",
+    "Pull Request",
+    "Merge Request",
+    "Tree View"
+  ],
+  "author": "xavier-rdo, hyvs",
+  "bugs": {
+    "url": "https://github.com/xavier-rdo/git-pull-request-tree-extension/issues"
+  },
+  "homepage": "https://github.com/xavier-rdo/git-pull-request-tree-extension",
+  "devDependencies": {
+    "chai": "~3.4.1",
+    "mocha": "~2.3.4"
+  }
+}
