@@ -152,7 +152,7 @@
     Root.prototype = Object.create(FolderNode.prototype);
 
     /*
-     * Javascript plumbing to make Model and TreeBuilder available in different contexts (Node, browser, ...)
+     * Javascript plumbing to make domain objects available in different contexts (Node, browser, ...)
      *
      * @see https://gist.github.com/CrocoDillon/9990078
      */
@@ -175,8 +175,8 @@
 (function(global) {
 
     /**
-     * Build the folder tree from root, including all folders and files
-     * contained in git files' paths.
+     * Build the folder tree from root, based on the paths and file names
+     * contained in git files.
      *
      * @param root     Root
      * @param gitFiles GitFile[]
