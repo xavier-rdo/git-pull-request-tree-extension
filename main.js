@@ -2,6 +2,15 @@
 /* ********** MODEL ********** */
 /* *************************** */
 
+/**
+ * Define main domain objects exposed in the context of Github pull requests :
+ *
+ * - abstract tree nodes (Node),
+ * - git files (GitFile inheriting from Node),
+ * - folders (FolderNode inheriting from Node),
+ * - root folder (Root inheriting from FolderNode)
+ */
+
 (function(global) {
 
     /**
@@ -142,9 +151,28 @@
 
     Root.prototype = Object.create(FolderNode.prototype);
 
-    /* *************************** */
-    /* ****** TREE BUILDER ******* */
-    /* *************************** */
+    /*
+     * Javascript plumbing to make Model and TreeBuilder available in different contexts (Node, browser, ...)
+     *
+     * @see https://gist.github.com/CrocoDillon/9990078
+     */
+    if (typeof exports === 'undefined') {
+        global.GitFile     = GitFile;
+        global.Root        = Root;
+        global.FolderNode  = FolderNode;
+    } else {
+        exports.GitFile     = GitFile;
+        exports.Root        = Root;
+        exports.FolderNode  = FolderNode;
+    }
+
+}(this));
+
+/* *************************** */
+/* ****** TREE BUILDER ******* */
+/* *************************** */
+
+(function(global) {
 
     /**
      * Build the folder tree from root, including all folders and files
@@ -168,21 +196,10 @@
         }
     };
 
-    /*
-     * Javascript plumbing to make Model and TreeBuilder available in different contexts (Node, browser, ...)
-     *
-     * @see https://gist.github.com/CrocoDillon/9990078
-     */
     if (typeof exports === 'undefined') {
-        global.GitFile     = GitFile;
-        global.Root        = Root;
-        global.FolderNode  = FolderNode;
         global.TreeBuilder = TreeBuilder;
     } else {
-        exports.GitFile     = GitFile;
-        exports.Root        = Root;
-        exports.FolderNode  = FolderNode;
         exports.TreeBuilder = TreeBuilder;
     }
 
-}(this));
+})(this);
