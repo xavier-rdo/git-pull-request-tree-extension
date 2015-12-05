@@ -24,8 +24,8 @@ var gitFiles = [
     new model.GitFile('src/MyApp/Api/Infrastructure/Bundle/Command/NotifyReviewableRecordsCommand.php', 5, 0, 5),
     new model.GitFile('src/MyApp/Api/Infrastructure/Bundle/Controller/ReviewController.php', 5, 0, 5),
     new model.GitFile('src/MyApp/Api/Infrastructure/Bundle/Resources/config/doctrine/Review.orm.yml', 5, 0, 5),
-    new model.GitFile('src/MyApp/Api/Infrastructure/Bundle/Resources/config/routing.yml', 5, 0, 5),
-    new model.GitFile('src/MyApp/Api/Infrastructure/Bundle/Resources/config/services.yml', 5, 0, 5),
+    new model.GitFile('src/MyApp/Api/Infrastructure/Bundle/Resources/config/routing.yml', 15, 0, 5),
+    new model.GitFile('src/MyApp/Api/Infrastructure/Bundle/Resources/config/services.yml', 5, 0, 10),
     new model.GitFile('src/MyApp/Api/Infrastructure/Bundle/Resources/translations/messages.fr.yml', 5, 0, 5),
     new model.GitFile('src/MyApp/Api/Infrastructure/Repository/Doctrine/ReviewRepository.php', 5, 0, 5),
     new model.GitFile('composer.json', 10, 0, 8),
@@ -62,6 +62,35 @@ describe('Github pull request File TreeBuilder\n', function() {
 
         it("Should register 10 removed lines in root folder", function(){
             root.removed.should.equal(10);
+        });
+
+        var folder = root
+            .getSubFolder('src')
+            .getSubFolder('MyApp')
+            .getSubFolder('Api')
+            .getSubFolder('Infrastructure')
+            .getSubFolder('Bundle')
+            .getSubFolder('Resources')
+        ;
+
+        it("Should add two folders in src/MyApp/Api/Infrastructure/Bundle/Resources", function() {
+            Object.keys(folder.folders).length.should.equal(2);
+        });
+
+        it("Should add no file in src/MyApp/Api/Infrastructure/Bundle/Resources", function() {
+           Object.keys(folder.files).length.should.equal(0);
+        });
+
+        it("Should therefore not increment created/updated/removed counters in that folder", function() {
+            folder.created.should.equal(0);
+            folder.updated.should.equal(0);
+            folder.removed.should.equal(0);
+        });
+
+        it("Should increment created and removed lines in 'config' sub-folder", function() {
+            var subFolder = folder.getSubFolder('config');
+            subFolder.created.should.equal(20);
+            subFolder.removed.should.equal(15);
         });
     });
 });

@@ -79,6 +79,7 @@
 
     /**
      * Add a folder node as a child of the current folder node
+     * unless it already exists
      *
      * @param name String
      *
@@ -105,6 +106,21 @@
         this.created += file.created;
         this.updated += file.updated;
         this.removed += file.removed;
+    };
+
+    /**
+     * Retrieve a sub-folder by name if it exists in the current folder
+     *
+     * @param name String Name of the sub-folder to retrieve
+     *
+     * @returns FolderNode|null
+     */
+    FolderNode.prototype.getSubFolder = function(name) {
+        if (! (name in this.folders)) {
+            return null;
+        }
+
+        return this.folders[name];
     };
 
     /**
