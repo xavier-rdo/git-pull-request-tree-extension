@@ -34,13 +34,13 @@ var gitFiles = [
 
 describe('Github pull request File TreeBuilder\n', function() {
 
-    describe('Tree Model (Nodes, Folders, Root, Files, GitFiles)', function() {
+    describe('Tree Model (Git Files, Tree Root, Folders and Files)', function() {
 
         it("Should create a root folder with name '.'", function() {
             root.name.should.equal('.');
         });
 
-        it("Should instantiate 21 GitFiles", function()  {
+        it("Should instantiate 21 Git Files", function()  {
             gitFiles.length.should.equal(21);
         });
     });

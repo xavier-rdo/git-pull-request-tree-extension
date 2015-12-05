@@ -5,7 +5,12 @@
 (function(global) {
 
     /**
-     * Model for a git file that is part of a Pull/Merge Request
+     * Model for a git file that is part of a Pull/Merge Request. Wraps data extracted
+     * from "Files changed" list in a Github pull request page : file path, count of new lines
+     * and deleted lines.
+     *
+     * To be Gitlab-compliant, it also exposes the updated parts (Gitlab distinguishes
+     * between created files, updated files and deleted files).
      *
      * @param fullPath String  Full path of the file relative to the git project root
      * @param created  Integer Count of new lines (Github) or 1 if new file (Gitlab)
@@ -60,7 +65,7 @@
     };
 
     /**
-     * Model for folder nodes
+     * Model for folder nodes (root or sub-folder)
      *
      * {@inheritdoc}
      */
@@ -118,9 +123,9 @@
      * Model for file nodes
      *
      * @param name    String     Name of the node
-     * @param created Integer    Count of new lines or 1 if new file
-     * @param updated Integer    Count of updated lines or 1 if updated file
-     * @param removed Integer    Count of removed lines or 1 if removed file
+     * @param created Integer    Count of new lines     (or 1 if added Gitlab file)
+     * @param updated Integer    Count of updated lines (or 1 if updated Gitlab file)
+     * @param removed Integer    Count of removed lines (or 1 if removed Gitlab file)
      */
     FileNode = function (name, created, updated, removed) {
         Node.call(this, name);
@@ -136,7 +141,7 @@
     /* *************************** */
 
     /**
-     * Build the folder tree from root, including any folder and file
+     * Build the folder tree from root, including all folders and files
      * contained in git files' paths.
      *
      * @param root     Root
@@ -160,7 +165,7 @@
     };
 
     /*
-     * Javascript plumbing to make Model available in different contexts (Node, browser, ...)
+     * Javascript plumbing to make Model and TreeBuilder available in different contexts (Node, browser, ...)
      *
      * @see https://gist.github.com/CrocoDillon/9990078
      */
