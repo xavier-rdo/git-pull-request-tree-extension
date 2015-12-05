@@ -2,7 +2,7 @@
 /* ********** MODEL ********** */
 /* *************************** */
 
-(function(obj) {
+(function(global) {
 
     /**
      * Model for a git file that is part of a Pull/Merge Request
@@ -159,14 +159,19 @@
         }
     };
 
+    /*
+     * Javascript plumbing to make Model available in different contexts (Node, browser, ...)
+     *
+     * @see https://gist.github.com/CrocoDillon/9990078
+     */
     if (typeof exports === 'undefined') {
-        obj.GitFile     = GitFile;
-        obj.Root        = Root;
-        obj.FolderNode  = FolderNode;
-        obj.FileNode    = FileNode;
-        obj.TreeBuilder = TreeBuilder;
+        global.GitFile     = GitFile;
+        global.Root        = Root;
+        global.FolderNode  = FolderNode;
+        global.FileNode    = FileNode;
+        global.TreeBuilder = TreeBuilder;
     } else {
-        exports.GitFile = GitFile;
+        exports.GitFile     = GitFile;
         exports.Root        = Root;
         exports.FolderNode  = FolderNode;
         exports.FileNode    = FileNode;
