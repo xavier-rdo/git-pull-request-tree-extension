@@ -1,7 +1,7 @@
 var
     path  = require('path'),
     chai  = require('chai'),
-    model = require(path.join(__dirname, '..', 'main'))
+    model = require(path.join(__dirname, '..', 'domain', 'model'))
 ;
 
 chai.should();
