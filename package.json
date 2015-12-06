@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha ./test/treeBuilderTest.js"
+    "test": "./node_modules/mocha/bin/mocha ./test/*Test.js"
   },
   "repository": {
     "type": "git",
