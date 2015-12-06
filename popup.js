@@ -55,4 +55,10 @@ function displayGitFiles(gitFilesInfo) {
 
         filesChanged.push(changedFile);
     }
+
+    var root = new Root();
+    new TreeBuilder(root, filesChanged);
+    var renderer = new TreeRenderer(root);
+    var treeView = renderer.render();
+    document.getElementById('tree-view-container').appendChild(treeView);
 }
