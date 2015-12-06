@@ -3,7 +3,7 @@
     "name":    "Github Pull Request Tree View",
     "version": "0.0",
     "offline_enabled": true,
-    "description": "This extension displays the list of changed files in a Github pull request as a tree view",
+    "description": "This extension displays Github's committed files as a tree view",
 
     "background": {
         "persistent": false,
@@ -18,7 +18,7 @@
     }],
 
     "page_action": {
-        "default_title": "Pull Request - Tree View",
+        "default_title": "Github's committed files - Tree View",
         "default_icon": {
             "19": "images/icon_treeview.png"
         },
