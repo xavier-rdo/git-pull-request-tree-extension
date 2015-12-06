@@ -7,13 +7,19 @@
 </head>
 <body>
 
- <h1>Files changed <span class="counter" id="changed_files_count"></span></h1>
+ <h1>Files changed <span class="counter" id="changed-files-count"></span></h1>
 
  <div id="changed-files-tree">
 
-     <p id="pr-summary"></p>
+     <p id="pr-summary">
+        Showing <a href="#" id="do-show-changed-files">
+        <span id="summary-changed-files">
+        </span> changed files</a> with
+        <span id="summary-changed-lines"></span> additions and
+        <span id="summary-removed-lines"></span> deletions
+    </p>
 
-     <ul id="changed-files-list"></ul>
+     <ul id="changed-files-list" style="display:none;"></ul>
 
      <div id="tree-view-container"></div>
 

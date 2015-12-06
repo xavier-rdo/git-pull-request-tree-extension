@@ -43,6 +43,43 @@
         };
     };
 
+    /**
+     * Parse the summary string from Github commit page to extract total number of files,
+     * total number of additions (file lines) and deletions (file lines).
+     *
+     * The summary to parse looks like this : 'Showing 25 changed files with 685 additions and 6 deletions.'
+     *
+     * Those results are also used in order to compute the relative weight of each changed file/folder
+     * in the commit and then infer highlighted ones.
+     *
+     * @param  {string} summary
+     *
+     * @return {Array} With keys: changedFiles, createdLines and removedLines
+     */
+    GithubParser.prototype.parseSummary = function(summary) {
+        // Number of changed files
+        var pattern      = /([0-9]+)[\s]*changed/;
+        var matches      = summary.match(pattern);
+        var changedFiles = parseInt(matches[1]);
+
+        // Number of added lines
+        var pattern      = /([0-9]+)[\s]*additions/;
+        var matches      = summary.match(pattern);
+        var createdLines = parseInt(matches[1]);
+
+        // Number of deleted lines
+        var pattern      = /([0-9]+)[\s]*deletions/;
+        var matches      = summary.match(pattern);
+        var removedLines = parseInt(matches[1]);
+
+        return {
+            changedFiles: changedFiles,
+            createdLines: createdLines,
+            removedLines: removedLines
+        }
+    }
+
+    // Export GithubParser module (in the CommonJS way or globally)
     if (typeof exports === 'undefined') {
         global.GithubParser = GithubParser;
     } else {

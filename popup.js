@@ -16,13 +16,15 @@ window.addEventListener('DOMContentLoaded', function() {
 
 function displayGitFiles(gitFilesInfo) {
 
-    document.getElementById('pr-summary').textContent = gitFilesInfo.summary;
-
     var fileList = document.getElementById('changed-files-list');
     var filesChanged = [];
     var parser = new GithubParser();
 
-    document.getElementById('changed_files_count').textContent = gitFilesInfo.items.length;
+    var summary = parser.parseSummary(gitFilesInfo.summary);
+    document.getElementById('summary-changed-files').textContent = summary.changedFiles;
+    document.getElementById('summary-changed-lines').textContent = summary.createdLines;
+    document.getElementById('summary-removed-lines').textContent = summary.removedLines;
+    document.getElementById('changed-files-count').textContent   = summary.changedFiles;
 
     for (var i = 0 ; i < gitFilesInfo.items.length ; i++) {
         var itemNode = document.createElement('li');
