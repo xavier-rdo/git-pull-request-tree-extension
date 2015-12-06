@@ -2,5 +2,5 @@
 
 ##TODO-LIST:
 
-* handle binary files (png images, for example) : no created or removed lines
-
+* Handle binary files (png images, for example) : no created or removed lines
+* Doc blocs in treeRenderer.js
