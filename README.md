@@ -1,1 +1,2 @@
-# git-pull-request-tree-extension
+# Git's pull request as a TreeView (Chrome extension)
+
