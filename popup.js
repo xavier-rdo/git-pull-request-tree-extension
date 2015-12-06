@@ -15,6 +15,7 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 function displayGitFiles(gitFilesInfo) {
-    document.getElementById('loaded-info').textContent = "Github page has been loaded";
-    console.log(gitFilesInfo.items);
+    document.getElementById('loaded-info').textContent = gitFilesInfo.summary;
+    var list = document.getElementById('changed-files-list');
+    list.innerHTML = gitFilesInfo.htmlList;
 }

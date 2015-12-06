@@ -14,7 +14,9 @@ chrome.runtime.onMessage.addListener(function(msg, sender, response) {
     if ((msg.from == 'popup') && (msg.subject == 'DOMContentLoaded')) {
         // Collect the necessary data :
         var gitFilesInfo = {
-            items: document.querySelectorAll('#toc ol li')
+            items: document.querySelectorAll('#toc ol li'),
+            htmlList: document.querySelector('#toc ol').innerHTML,
+            summary: document.querySelector('#toc .toc-diff-stats').textContent
         };
         // Respond to the sender (popup) :
         response(gitFilesInfo);
