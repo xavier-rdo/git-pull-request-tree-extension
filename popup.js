@@ -15,7 +15,12 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 function displayGitFiles(gitFilesInfo) {
-    document.getElementById('loaded-info').textContent = gitFilesInfo.summary;
-    var list = document.getElementById('changed-files-list');
-    list.innerHTML = gitFilesInfo.htmlList;
+    document.getElementById('pr-summary').textContent = gitFilesInfo.summary;
+    var fileList = document.getElementById('changed-files-list');
+    for (var i = 0 ; i < gitFilesInfo.items.length ; i++) {
+        var itemNode = document.createElement('li');
+        itemNode.textContent =  gitFilesInfo.items[i];
+        fileList.appendChild(itemNode);
+    }
+    document.getElementById('changed_files_count').textContent = gitFilesInfo.items.length;
 }

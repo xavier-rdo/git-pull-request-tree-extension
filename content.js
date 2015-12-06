@@ -13,12 +13,17 @@ chrome.runtime.onMessage.addListener(function(msg, sender, response) {
     // If message from popup when it its DOM is loaded :
     if ((msg.from == 'popup') && (msg.subject == 'DOMContentLoaded')) {
         // Collect the necessary data :
+        var items = [];
+        var listElements = document.querySelectorAll('#toc ol li');
+        for (var i = 0 ; i < listElements.length ; i++)
+        {
+            items.push((listElements[i].textContent).trim().replace('', ''));
+        }
         var gitFilesInfo = {
-            items: document.querySelectorAll('#toc ol li'),
-            htmlList: document.querySelector('#toc ol').innerHTML,
+            items: items,
             summary: document.querySelector('#toc .toc-diff-stats').textContent
         };
-        // Respond to the sender (popup) :
+        // Respond to the sender ('popup' page action) :
         response(gitFilesInfo);
     }
 });
