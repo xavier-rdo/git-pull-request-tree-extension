@@ -25,9 +25,10 @@
      * @returns Array {{created: number, updated: number, removed: number, fullPath: string}}
      */
     GithubParser.prototype.parseChangedFileLine = function(line) {
+        // @TODO: handle this special case: 'BIN images/icon_file.png'
         // Replace exotic minus sign ...
         line = line.replace('−', '-');
-        pattern = /([\+\-\−][0-9]+)[\s]*([\+\-\−][0-9]+)[\s]*([\w\.\-\/]*)/;
+        pattern = /([\+\-\−][0-9]+)[\s]*([\+\-\−][0-9]+)[\s]*([\w\.\-\/_]*)/;
         var matches = line.match(pattern);
 
         if (matches === null) {

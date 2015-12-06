@@ -28,6 +28,9 @@ function displayGitFiles(gitFilesInfo) {
         var itemNode = document.createElement('li');
         var itemDetails = parser.parseChangedFileLine(gitFilesInfo.items[i]);
 
+        if (itemDetails === false)
+            continue;
+
         // Add changed file in the changed files list
         itemNode.textContent = itemDetails.fullPath;
         fileList.appendChild(itemNode);
