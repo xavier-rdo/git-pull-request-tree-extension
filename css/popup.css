@@ -2,3 +2,33 @@ body {
     width: 600px;
 }
 
+h1 {
+    color: #666;
+}
+
+.counter {
+    margin-left: 5px;
+    display: inline-block;
+    padding: 2px 5px;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 1;
+    color: #666;
+    background-color: #eee;
+    border-radius: 20px;
+}
+
+.counter-updated {
+    background-color: #eee;
+    color: #666;
+}
+
+.counter-removed {
+    background-color: #bd2c00;
+    color: #fff;
+}
+
+.counter-created {
+    background-color: #55a532;
+    color: #fff;
+}
