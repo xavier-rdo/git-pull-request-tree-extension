@@ -12,9 +12,15 @@ chrome.runtime.sendMessage({
 chrome.runtime.onMessage.addListener(function(msg, sender, response) {
     // If message from popup when it its DOM is loaded :
     if ((msg.from == 'popup') && (msg.subject == 'DOMContentLoaded')) {
+
         // Collect the necessary data :
-        var items = [];
         var listElements = document.querySelectorAll('#toc ol li');
+        // Make sure that we are visiting a Github commit or pull request page:
+        if (listElements.length === 0) {
+            response(false);
+            return;
+        }
+        var items = [];
         for (var i = 0 ; i < listElements.length ; i++)
         {
             items.push((listElements[i].textContent).trim().replace('', ''));
