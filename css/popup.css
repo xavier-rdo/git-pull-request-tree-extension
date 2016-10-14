@@ -63,3 +63,11 @@ ul.file-container {
     list-style-image: url(../images/icon_file.png);
     margin: 0px;
 }
+
+span.additions {
+    color: #55a532;
+}
+
+span.deletions {
+    color: #bd2c00;
+}

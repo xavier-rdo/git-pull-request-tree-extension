@@ -18,28 +18,44 @@
      * Converts a string representation of a modified file (filepath, number of created lines,
      * number of removed lines) into an array.
      *
-     * Example of a line to be parsed : '+1 -1 src/AppBundle/Form/Type/MyFormType.php'
+     * Example of a block to be parsed :
      *
-     * @param line string The Github line corresponding to a changed file in the PR list
+     * ```
+     *     <span class="diffstat tooltipped tooltipped-e" aria-label="23 additions &amp; 0 deletions">23 
+     *         <span class="block-diff-added"></span>
+     *         <span class="block-diff-added"></span>
+     *         <span class="block-diff-added"></span>
+     *         <span class="block-diff-added"></span>
+     *         <span class="block-diff-added"></span>
+     *     </span>
+     *     <span class="user-select-contain" title="app/Resources/translations/messages.fr.yml">
+     *         app/Resources/translations/messages.fr.yml
+     *     </span>
+     * ```
+     *
+     * @param changedFileBlock string The Github HTML corresponding to a changed file header in the PR list
      *
      * @returns Array {{created: number, updated: number, removed: number, fullPath: string}}
      */
-    GithubParser.prototype.parseChangedFileLine = function(line) {
-        // @TODO: handle this special case: 'BIN images/icon_file.png'
-        // Replace exotic minus sign ...
-        line = line.replace('−', '-');
-        pattern = /([\+\-\−][0-9]+)[\s]*([\+\-\−][0-9]+)[\s]*([\w\.\-\/_]*)/;
-        var matches = line.match(pattern);
+    GithubParser.prototype.parseChangedFileBlock = function(changedFileBlock) {
+        var pathRegexp = /<span class="user-select-contain" title="[\sa-zA-Z0-9\/\.\-\_]*">([\sa-zA-Z0-9\/\.\-\_]*)<\/span>/g;
+        var matches = pathRegexp.exec(changedFileBlock);
 
         if (matches === null) {
             return false;
         }
 
+        var filePath = matches[1].trim();
+        var additionsRegexp = /([0-9]+)[\s]*additions/;
+        var additionMatches = additionsRegexp.exec(changedFileBlock);
+        var deletionsRegexp = /([0-9]+)[\s]*deletions/;
+        var deletionMatches = deletionsRegexp.exec(changedFileBlock);
+
         return {
-            created: Math.abs(parseInt(matches[1])),
+            created: additionMatches !== null ? parseInt(additionMatches[1]) : 0,
             updated: 0,
-            removed: Math.abs(parseInt(matches[2])),
-            fullPath: matches[3].trim()
+            removed: deletionMatches !== null ? parseInt(deletionMatches[1]) : 0,
+            fullPath: filePath
         };
     };
 
@@ -52,24 +68,26 @@
      * Those results are also used in order to compute the relative weight of each changed file/folder
      * in the commit and then infer highlighted ones.
      *
-     * @param  {string} summary
+     * @param {string} changedFilesText
+     * @param {string} changedLinesText
      *
      * @return {Array} With keys: changedFiles, createdLines and removedLines
      */
-    GithubParser.prototype.parseSummary = function(summary) {
+    GithubParser.prototype.parseSummary = function(changedFilesText, changedLinesText) {
+        // console.log(changedFilesText, 'coucou', changedLinesText);
         // Number of changed files
-        var pattern      = /([0-9]+)[\s]*changed/;
-        var matches      = summary.match(pattern);
+        var pattern      = /([0-9]+)[\s]*files/;
+        var matches      = changedFilesText.match(pattern);
         var changedFiles = parseInt(matches[1]);
 
         // Number of added lines
-        var pattern      = /([0-9]+)[\s]*additions/;
-        var matches      = summary.match(pattern);
+        var pattern      = /\+([0-9]+)/;
+        var matches      = changedLinesText.match(pattern);
         var createdLines = parseInt(matches[1]);
 
         // Number of deleted lines
-        var pattern      = /([0-9]+)[\s]*deletions/;
-        var matches      = summary.match(pattern);
+        var pattern      = /\−([0-9]+)/;
+        var matches      = changedLinesText.match(pattern);
         var removedLines = parseInt(matches[1]);
 
         return {

@@ -13,39 +13,53 @@ describe('Github Parser', function() {
     describe('Changed file line parser', function() {
 
         it("Should parse atomic files", function() {
-            var line   = '+1 -2 README.md';
-            var parsed = parser.parseChangedFileLine(line);
-            parsed.created.should.equal(1);
+            var block = '\
+                <span class="diffstat tooltipped tooltipped-e" aria-label="3 additions &amp; 2 deletions">23\
+                <span class="user-select-contain" title="README.md">\
+                README.md\
+                </span>\
+            ';
+            var parsed = parser.parseChangedFileBlock(block);
+            parsed.created.should.equal(3);
             parsed.updated.should.equal(0);
             parsed.removed.should.equal(2);
             parsed.fullPath.should.equal('README.md');
         });
 
         it("Should parse multi-level filepaths", function() {
-            var line   = '+1 -2 src/MyApp/Model/Customer.php';
-            var parsed = parser.parseChangedFileLine(line);
-            parsed.created.should.equal(1);
-            parsed.fullPath.should.equal('src/MyApp/Model/Customer.php');
+            var block = '\
+                <span class="diffstat tooltipped tooltipped-e" aria-label="23 additions &amp; 0 deletions">23\
+                <span class="user-select-contain" title="app/Resources/translations/messages.fr.yml">\
+                app/Resources/translations/messages.fr.yml\
+                </span>\
+            ';
+            var parsed = parser.parseChangedFileBlock(block);
+            parsed.created.should.equal(23);
+            parsed.fullPath.should.equal('app/Resources/translations/messages.fr.yml');
         });
 
-        it("Should handle extra spaces", function() {
-            var line   = '+1   -2    README.md';
-            var parsed = parser.parseChangedFileLine(line);
-            parsed.created.should.equal(1);
-            parsed.removed.should.equal(2);
-            parsed.fullPath.should.equal('README.md');
-        });
-
-        it("Should parse exotic minus signs", function() {
-            var line   = '+1 −2 README.md';
-            var parsed = parser.parseChangedFileLine(line);
-            parsed.removed.should.equal(2);
-            parsed.fullPath.should.equal('README.md');
+        it("Should parse binary files", function() {
+            var block = '\
+                <span class="diffstat tooltipped tooltipped-e" aria-label="Binary file added">BIN\
+                <span class="text-green">\
+                <span class="block-diff-neutral"></span><span class="block-diff-neutral"></span>\
+                <span class="block-diff-neutral"></span><span class="block-diff-neutral"></span>\
+                <span class="block-diff-neutral"></span>\
+                </span>\
+                </span>\
+                <span class="user-select-contain" title="web/assets/vendor/front/images/phone-1.png">\
+                web/assets/vendor/front/images/phone-1.png\
+            </span>\
+            ';
+            var parsed = parser.parseChangedFileBlock(block);
+            parsed.created.should.equal(0);
+            parsed.removed.should.equal(0);
+            parsed.fullPath.should.equal('web/assets/vendor/front/images/phone-1.png');
         });
 
         it("Should handle gracefully unmatching strings", function() {
             var line = 'unmatching-string';
-            var parsed = parser.parseChangedFileLine(line);
+            var parsed = parser.parseChangedFileBlock(line);
             parsed.should.equal(false);
         });
 
