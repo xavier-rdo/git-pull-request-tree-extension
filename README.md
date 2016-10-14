@@ -1,10 +1,13 @@
 # Git's commit files as a TreeView (Chrome extension)
 
-##TODO-LIST:
+Adds a popup displaying committed files as a hierarchical directory view when visiting a Github's Pull Request or Commit detail page:
 
-* Handle binary files (png images, for example) : they have no created or removed lines but marked as *BIN*
+![Committed files viewed as a tree](images/treeview-example.png)
+
+## ROADMAP & TODO's:
+
 * Doc blocs in treeRenderer.js source code
-* Hide/show action on committed files flat list
 * Hide/show action on files in the tree view
 * Retrieve summary (files changed, removed lines, added lines) as structured data (to compute ratio of each committed file)
 * Marking important change ratios
+* Making the extension Gitlab-compliant

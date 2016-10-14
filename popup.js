@@ -26,12 +26,12 @@ function displayGitFiles(gitFilesInfo) {
     var filesChanged = [];
     var parser       = new GithubParser();
 
-    var summary = parser.parseSummary(gitFilesInfo.summary);
+    var summary = parser.parseSummary(gitFilesInfo.changedFilesText, gitFilesInfo.changedLinesText);
 
     document.getElementById('summary-changed-files').textContent = summary.changedFiles;
     document.getElementById('summary-changed-lines').textContent = summary.createdLines;
     document.getElementById('summary-removed-lines').textContent = summary.removedLines;
-    document.getElementById('changed-files-count').textContent   = summary.changedFiles;
+    // document.getElementById('changed-files-count').textContent   = summary.changedFiles;
 
     document.getElementById("do-show-changed-files").addEventListener("click", function(evt){
         evt.preventDefault();
@@ -40,7 +40,7 @@ function displayGitFiles(gitFilesInfo) {
 
     for (var i = 0 ; i < gitFilesInfo.items.length ; i++) {
         var itemNode = document.createElement('li');
-        var itemDetails = parser.parseChangedFileLine(gitFilesInfo.items[i]);
+        var itemDetails = parser.parseChangedFileBlock(gitFilesInfo.items[i]);
 
         if (itemDetails === false)
             continue;

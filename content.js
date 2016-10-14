@@ -10,11 +10,11 @@ chrome.runtime.sendMessage({
 });
 
 chrome.runtime.onMessage.addListener(function(msg, sender, response) {
-    // If message from popup when it its DOM is loaded :
+    // If message from is 'popup' and its DOM is loaded :
     if ((msg.from == 'popup') && (msg.subject == 'DOMContentLoaded')) {
 
-        // Collect the necessary data :
-        var listElements = document.querySelectorAll('#toc ol li');
+        // 1. Collect the changed files data :
+        var listElements = document.querySelectorAll('#files div.file .file-info');
         // Make sure that we are visiting a Github commit or pull request page:
         if (listElements.length === 0) {
             response(false);
@@ -23,11 +23,16 @@ chrome.runtime.onMessage.addListener(function(msg, sender, response) {
         var items = [];
         for (var i = 0 ; i < listElements.length ; i++)
         {
-            items.push((listElements[i].textContent).trim().replace('', ''));
+            var content = listElements[i].innerHTML.trim();
+            items.push(content);
         }
+
+        // 2. Collect summary data (total changed files, new code lines, deleted code lines):
+
         var gitFilesInfo = {
             items: items,
-            summary: document.querySelector('#toc .toc-diff-stats').textContent
+            changedFilesText: document.querySelector('#files_bucket div.toc-select button').textContent,
+            changedLinesText: document.querySelector('#files_bucket span.diffbar-item.diffstat').textContent
         };
         // Respond to the sender ('popup' page action) :
         response(gitFilesInfo);
