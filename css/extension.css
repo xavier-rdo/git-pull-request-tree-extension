@@ -1,0 +1,64 @@
+#tree-extension-div {
+    position: fixed;
+    top: 60px;
+    left: 0px;
+    font-size: 0.8em;
+    width: 0px;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    transition: 0.7s; /* 0.n second transition effect to slide in the sidenav */
+}
+
+.ext-panel-expanded {
+    width: auto !important;
+    padding: 10px;
+}
+
+/* Position and style the expand button (top right corner) */
+#ext-expand-panel {
+    z-index: 1;
+    position: absolute;
+    cursor:pointer;
+    top: 0;
+    left: 0px;
+    font-size: 12px;
+}
+
+.ext-counter {
+    margin-left: 5px;
+    display: inline-block;
+    padding: 2px 5px;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 1;
+    color: #666;
+    background-color: #eee;
+    border-radius: 20px;
+}
+
+ul#changed-files-list {
+    list-style-image: url('chrome-extension://__MSG_@@extension_id__/images/icon_file.png');
+    margin-left: 20px;
+}
+
+.counter-updated {
+    background-color: #eee;
+    color: #666;
+}
+
+.counter-removed {
+    background-color: #bd2c00;
+    color: #fff;
+}
+
+.counter-created {
+    background-color: #55a532;
+    color: #fff;
+}
+
+span.additions {
+    color: #55a532;
+}
+
+span.deletions {
+    color: #bd2c00;
+}

@@ -1,18 +1,26 @@
 {
     "manifest_version": 2,
     "name":    "Github Pull Request Tree View",
-    "version": "0.0",
+    "version": "0.2",
     "offline_enabled": true,
     "description": "This extension displays Github's committed files as a tree view",
 
     "background": {
         "persistent": false,
-        "scripts": ["background.js"]
+        "page": "background.html"
     },
 
     "content_scripts": [{
         "matches":    ["https://github.com/*"],
-        "js":         ["content.js"],
+        "js":         [
+            "content.js",
+            "vendor/jquery/1.12.1/jquery.min.js",
+            "vendor/jstree/3.2.1/jstree.min.js"
+        ],
+        "css":        [
+            "css/extension.css",
+            "vendor/jstree/themes/default/style.min.css"
+        ],
         "run_at":     "document_idle",
         "all_frames": false
     }],
@@ -21,7 +29,11 @@
         "default_title": "Github's committed files - Tree View",
         "default_icon": {
             "19": "images/icon_treeview.png"
-        },
-        "default_popup": "popup.html"
-    }
+        }
+    },
+
+    "web_accessible_resources": [
+        "images/icon_file.png",
+        "vendor/jstree/themes/default/32px.png"
+    ]
 }

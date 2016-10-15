@@ -99,14 +99,14 @@
 
         if (node.created > 0) {
             var span = document.createElement('span');
-            span.className = 'counter counter-created';
+            span.className = 'ext-counter counter-created';
             span.textContent = node.created;
             spans.push(span);
         }
 
         if (node.removed > 0) {
             var span = document.createElement('span');
-            span.className = 'counter counter-removed';
+            span.className = 'ext-counter counter-removed';
             span.textContent= node.removed;
             spans.push(span);
         }

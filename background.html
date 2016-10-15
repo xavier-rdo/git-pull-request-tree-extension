@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Github commits - Tree View</title>
+</head>
+<body>
+
+<!-- @TODO: template tag + placeholders à la mustache.js -->
+<div id="main_content">
+
+    <h4>Files changed</span></h4>
+
+    <div id="changed-files-tree">
+
+        <p id="pr-summary">
+            <ul>
+                <li>
+                    <a href="#" id="do-show-changed-files">
+                        <span id="summary-changed-files"></span> changed files
+                    </a>
+                </li>
+                <li>
+                    <strong>
+                        <span class="additions">
+                        <span id="summary-changed-lines"></span> additions
+                        </span>
+                    </strong>
+                </li>
+                <li>
+                    <strong>
+                        <span class="deletions">
+                        <span id="summary-removed-lines"></span> deletions
+                        </span>
+                    </strong>
+                </li>
+            </ul>
+        </p>
+
+        <ul id="changed-files-list" style="display:none;"></ul>
+
+        <div id="tree-view-container"></div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript" src="domain/githubParser.js"></script>
+<script type="text/javascript" src="domain/model.js"></script>
+<script type="text/javascript" src="domain/treeRenderer.js"></script>
+<script type="text/javascript" src="background.js"></script>
+
+</body>
+</html>
