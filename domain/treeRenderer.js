@@ -1,22 +1,39 @@
 (function(global) {
 
+    /**
+     * @param {Root} root
+     *
+     * @constructor
+     */
     var TreeRenderer = function(root) {
         this.root = root;
-        this.parentContainer = document.createElement('div');
-        this.parentContainer.className = 'tree-view';
+        this.parentContainer = document.createElement('ul');
+        this.parentContainer.className = 'ext-tree-view';
     };
 
+    /**
+     * Build & return the DOM Element (ul: unordered list) that contains the tree structure (folders & files)
+     *
+     * @returns {Element}
+     */
     TreeRenderer.prototype.render = function() {
         var rootContainer = this.renderFolder(this.root);
         this.parentContainer.appendChild(rootContainer);
         return this.parentContainer;
     };
 
+    /**
+     * Render the DOM Element (li: list-item) that contains the folder's items (files & subfolders).
+     *
+     * @param {FolderNode} folder
+     *
+     * @returns {Element}
+     */
     TreeRenderer.prototype.renderFolder = function(folder) {
 
-        var folderContainer       = document.createElement('div');
-        folderContainer.className = "folder-container";
-        var folderTitle           = document.createElement('h2');
+        var folderContainer       = document.createElement('li');
+        // folderContainer.className = "folder-container";
+        var folderTitle           = document.createElement('span');
         folderTitle.textContent   = folder.name;
 
         var counters = this.renderCounters(folder);
@@ -25,11 +42,15 @@
         }
         folderContainer.appendChild(folderTitle);
 
-        for (key in folder.folders) {
-            subfolder = folder.folders[key];
-            folderContainer.appendChild(this.renderFolder(subfolder));
+        // Handle folder's subfolders
+        var subFoldersContainer = document.createElement('ul');
+        for (var key in folder.folders) {
+            var subfolder = folder.folders[key];
+            subFoldersContainer.appendChild(this.renderFolder(subfolder));
         }
+        folderContainer.appendChild(subFoldersContainer);
 
+        // Handle folder's files
         var fileList = this.renderFiles(folder);
         if (false !== fileList) {
             folderContainer.appendChild(fileList);
@@ -38,13 +59,20 @@
         return folderContainer;
     };
 
+    /**
+     * Build & return the DOM Element (ul: unordered list) that contains the folder's files.
+     *
+     * @param {FolderNode} folder
+     *
+     * @returns {Element} UL Element where each LI corresponds to a file.
+     */
     TreeRenderer.prototype.renderFiles = function(folder) {
         var keys = Object.keys(folder.files);
         if (keys.length === 0) {
             return false;
         }
         var fileList = document.createElement('ul');
-        fileList.className = "file-container";
+        // fileList.className = "file-container";
         for (key in keys) {
             var gitfile  = folder.files[keys[key]];
             var fileItem = document.createElement('li');
@@ -59,6 +87,13 @@
         return fileList;
     };
 
+    /**
+     * Return for the current node the DOM elements (span) that display the number of additions & deletions.
+     *
+     * @param {Node} node
+     *
+     * @returns {Element[]} span elements: one for additions, one for deletions
+     */
     TreeRenderer.prototype.renderCounters = function(node) {
         var spans = [];
 
@@ -77,7 +112,7 @@
         }
 
         return spans;
-    }
+    };
 
     global.TreeRenderer = TreeRenderer;
 
