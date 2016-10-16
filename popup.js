@@ -78,4 +78,12 @@ function displayGitFiles(gitFilesInfo) {
     var renderer = new TreeRenderer(root);
     var treeView = renderer.render();
     document.getElementById('tree-view-container').appendChild(treeView);
+    $('#tree-view-container').jstree({
+        "core" : {
+            "themes" : {
+                "variant" : "small"
+            }
+        }
+    });
+    $('#tree-view-container li:first-child').attr('data-jstree', '{"opened":true}');
 }

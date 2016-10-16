@@ -6,8 +6,6 @@ Adds a popup displaying committed files as a hierarchical directory view when vi
 
 ## ROADMAP & TODO's:
 
-* Doc blocs in treeRenderer.js source code
-* Hide/show action on files in the tree view
 * Retrieve summary (files changed, removed lines, added lines) as structured data (to compute ratio of each committed file)
 * Marking important change ratios
 * Making the extension Gitlab-compliant

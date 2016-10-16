@@ -47,23 +47,6 @@ ul#changed-files-list li {
     font-size: 0.9em;
 }
 
-div.folder-container h2 {
-    background-image: url(../images/plus_icon.png);
-    background-repeat: no-repeat;
-    background-position: 0px;
-    padding-left: 20px;
-    margin: 0px;
-}
-
-div.folder-container {
-    padding-left: 20px;
-}
-
-ul.file-container {
-    list-style-image: url(../images/icon_file.png);
-    margin: 0px;
-}
-
 span.additions {
     color: #55a532;
 }
