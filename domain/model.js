@@ -142,10 +142,12 @@
     /**
      * Model for root folder (has no parent).
      *
+     * @param {String} name
+     *
      * @constructor
      */
-    var Root = function () {
-        FolderNode.call(this, '/');
+    var Root = function (name) {
+        FolderNode.call(this, name || '/');
         this.parent = null;
     };
 

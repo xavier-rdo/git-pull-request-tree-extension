@@ -32,7 +32,7 @@
     TreeRenderer.prototype.renderFolder = function(folder) {
 
         var folderContainer       = document.createElement('li');
-        // folderContainer.className = "folder-container";
+        folderContainer.className = "jstree-open";
         var folderTitle           = document.createElement('span');
         folderTitle.textContent   = folder.name;
 
@@ -72,11 +72,11 @@
             return false;
         }
         var fileList = document.createElement('ul');
-        // fileList.className = "file-container";
         for (key in keys) {
             var gitfile  = folder.files[keys[key]];
             var fileItem = document.createElement('li');
             fileItem.textContent = gitfile.name;
+            fileItem.setAttribute('data-jstree', '{"icon": "jstree-file"}');
             var counters = this.renderCounters(gitfile);
             for (var i = 0 ; i < counters.length ; i++) {
                 fileItem.appendChild(counters[i]);
