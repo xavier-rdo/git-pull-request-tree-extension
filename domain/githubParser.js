@@ -46,9 +46,9 @@
         }
 
         var filePath = matches[1].trim();
-        var additionsRegexp = /([0-9]+)[\s]*additions/;
+        var additionsRegexp = /([0-9]+)[\s]*addition*/;
         var additionMatches = additionsRegexp.exec(changedFileBlock);
-        var deletionsRegexp = /([0-9]+)[\s]*deletions/;
+        var deletionsRegexp = /([0-9]+)[\s]*deletion/;
         var deletionMatches = deletionsRegexp.exec(changedFileBlock);
 
         return {
@@ -61,22 +61,16 @@
 
     /**
      * Parse the summary string from Github commit page to extract total number of files,
-     * total number of additions (file lines) and deletions (file lines).
+     * total number of additions (created lines) and deletions (removed lines).
      *
-     * The summary to parse looks like this : 'Showing 25 changed files with 685 additions and 6 deletions.'
-     *
-     * Those results are also used in order to compute the relative weight of each changed file/folder
-     * in the commit and then infer highlighted ones.
-     *
-     * @param {string} changedFilesText
-     * @param {string} changedLinesText
+     * @param {string} changedFilesText eg '1 file', '12 files'
+     * @param {string} changedLinesText eg '+12 −5'
      *
      * @return {Array} With keys: changedFiles, createdLines and removedLines
      */
     GithubParser.prototype.parseSummary = function(changedFilesText, changedLinesText) {
-        // console.log(changedFilesText, 'coucou', changedLinesText);
         // Number of changed files
-        var pattern      = /([0-9]+)[\s]*files/;
+        var pattern      = /([0-9]+)[\s]*file/;
         var matches      = changedFilesText.match(pattern);
         var changedFiles = parseInt(matches[1]);
 

@@ -12,6 +12,18 @@ describe('Github Parser', function() {
 
     describe('Changed file line parser', function() {
 
+        it("Should parse summary with one or several changed files", function() {
+            var parsedSummary = parser.parseSummary('1 file', '+15 −6');
+            parsedSummary.changedFiles.should.equal(1);
+            parsedSummary.createdLines.should.equal(15);
+            parsedSummary.removedLines.should.equal(6);
+
+            parsedSummary = parser.parseSummary('2 files', '+15 −6');
+            parsedSummary.changedFiles.should.equal(2);
+            parsedSummary.createdLines.should.equal(15);
+            parsedSummary.removedLines.should.equal(6);
+        });
+
         it("Should parse atomic files", function() {
             var block = '\
                 <span class="diffstat tooltipped tooltipped-e" aria-label="3 additions &amp; 2 deletions">23\
@@ -38,6 +50,18 @@ describe('Github Parser', function() {
             parsed.fullPath.should.equal('app/Resources/translations/messages.fr.yml');
         });
 
+        it("Should parse correctly file changes with one deletion or one addition only", function() {
+            var block = '\
+                <span class="diffstat tooltipped tooltipped-e" aria-label="1 addition &amp; 1 deletion">23\
+                <span class="user-select-contain" title="README.md">\
+                README.md\
+                </span>\
+            ';
+            var parsed = parser.parseChangedFileBlock(block);
+            parsed.created.should.equal(1);
+            parsed.removed.should.equal(1);
+        });
+
         it("Should parse binary files", function() {
             var block = '\
                 <span class="diffstat tooltipped tooltipped-e" aria-label="Binary file added">BIN\
@@ -58,8 +82,7 @@ describe('Github Parser', function() {
         });
 
         it("Should handle gracefully unmatching strings", function() {
-            var line = 'unmatching-string';
-            var parsed = parser.parseChangedFileBlock(line);
+            var parsed = parser.parseChangedFileBlock('unmatching-string');
             parsed.should.equal(false);
         });
 
