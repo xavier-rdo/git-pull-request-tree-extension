@@ -73,7 +73,7 @@ function displayGitFiles(gitFilesInfo) {
         filesChanged.push(changedFile);
     }
 
-    var root = new Root();
+    var root = new Root(parser.parseProjectName(gitFilesInfo.projectName));
     new TreeBuilder(root, filesChanged);
     var renderer = new TreeRenderer(root);
     var treeView = renderer.render();

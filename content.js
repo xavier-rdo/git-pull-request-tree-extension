@@ -31,6 +31,7 @@ chrome.runtime.onMessage.addListener(function(msg, sender, response) {
 
         var gitFilesInfo = {
             items: items,
+            projectName: document.querySelector('h1').textContent,
             changedFilesText: document.querySelector('#files_bucket div.toc-select button').textContent,
             changedLinesText: document.querySelector('#files_bucket span.diffbar-item.diffstat').textContent
         };

@@ -95,7 +95,20 @@
             createdLines: createdLines,
             removedLines: removedLines
         }
-    }
+    };
+
+    /**
+     * Extract the project's name from the page's main title (H1 content). The title's pattern is: <author>/<project>.
+     *
+     * @param {string} pageTitle
+     *
+     * @returns {string}
+     */
+    GithubParser.prototype.parseProjectName = function(pageTitle) {
+        var chunks = pageTitle.split('/');
+
+        return chunks[1].trim();
+    };
 
     // Export GithubParser module (in the CommonJS way or globally)
     if (typeof exports === 'undefined') {
