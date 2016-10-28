@@ -27,6 +27,7 @@
   "homepage": "https://github.com/xavier-rdo/git-pull-request-tree-extension",
   "devDependencies": {
     "chai": "^3.5.0",
+    "jshint": "^2.9.4",
     "mocha": "^3.1.2"
   }
 }
